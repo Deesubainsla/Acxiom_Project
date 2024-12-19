@@ -10,7 +10,7 @@ const errormiddleware = (err, req, res, next)=>{
 
 }
 
-class error extends Error(){
+class error extends Error{
     constructor(msg,statuscode){
         super(msg),
         this.statuscode = statuscode
