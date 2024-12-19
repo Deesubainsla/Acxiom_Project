@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import { errormiddleware } from './middlewares/error.middleware.js';
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
-import { login,logout,signin } from './controllers/common.controllers.js';
+import { getmyprofile, login,logout,makeadmin,signin } from './controllers/common.controllers.js';
 import DBconnection from './utils/dbconnection.js';
 import Authenticated from './middlewares/Authentication.middleware.js';
 
@@ -15,7 +15,10 @@ const port = process.env.PORT || 4000;
 
 //middlewares:
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin:['http://localhost:5173'],
+    credentials: true
+}));
 app.use(cookieParser());
 
 
@@ -25,10 +28,12 @@ app.get('/',(req,res)=>{
 })
 app.post('/login',login);
 app.post('/signin',signin);
+app.post('/makeadmin',makeadmin);
 
 app.use(Authenticated);
 
 app.delete('/logout',logout);
+app.get('/getmyprofile',getmyprofile);
 
 
 

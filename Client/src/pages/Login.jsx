@@ -1,13 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form';
 import axios from 'axios'
+import { mycontext } from '../context/Mycontext';
+import {useNavigate} from 'react-router-dom'
 
 function Login() {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { register:register1, handleSubmit:handleSubmit1, formState: { errors:errors1 } } = useForm();
 
+
     const [login, setlogin] = useState(true);
+    const navigate = useNavigate();
+    const {setuser} = mycontext();
     // const [role, setrole] = useState("");
 
     const roleref = useRef(null);
@@ -21,19 +26,56 @@ function Login() {
         const info = {
             email: data.loginemail,
             password: data.loginpassword,
-            role: data.role
+            role: data.loginrole
         }
         try {
-            const res = await axios.post(`${import.meta.env.VITE_SERVER}/login`,info,
+            const res = await axios.post(`${import.meta.env.VITE_URL}/login`,info,
                 {withCredentials: true}
             )
+
+            // console.log("res",res);
+            const role = data.loginrole.toLowerCase();
+            // console.log("role",role);
+            const myuser = {
+                ...res.data.user,
+                role
+            }
+            // console.log("myuser",myuser);
+            setuser(myuser);
+            navigate(`/${role}`);
+
         } catch (error) {
             console.log(error.response.data.message)
         }
     }
 
     const handlesignin = async(data) => {
-        console.log(data);
+        const info = {
+            name: data.signinname,
+            email: data.signinemail,
+            password: data.signinpassword,
+            role: data.signinrole,
+            category: data.signincategory
+        }
+        try {
+            const res = await axios.post(`${import.meta.env.VITE_URL}/signin`,info,
+                {withCredentials: true}
+            )
+
+            // console.log("res",res);
+            const role = data.signinrole.toLowerCase();
+            // console.log("role",role);
+            const myuser = {
+                ...res.data.user,
+                role
+            }
+            // console.log("myuser",myuser);
+            setuser(myuser);
+            navigate(`/${role}`);
+
+        } catch (error) {
+            console.log(error.response.data.message)
+        }
     }
 
     return <>

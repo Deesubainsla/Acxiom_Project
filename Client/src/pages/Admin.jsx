@@ -1,6 +1,22 @@
 import React from 'react'
+import axios from 'axios';
+import { mycontext } from '../context/Mycontext';
 
 function Admin() {
+
+    const {setuser} = mycontext();
+    const logouthandler = async()=>{
+        try {
+
+            await axios.delete(`${import.meta.env.VITE_URL}/logout`,{withCredentials: true});
+            setuser(null);
+        } catch (error) {
+            console.log(error.response.data.message);
+        }
+
+    }
+
+
     return <>
         <div className='h-full flex items-center justify-center '>
 
@@ -13,7 +29,7 @@ function Admin() {
 
                     <button className='bg-blue-500 border text-white border-gray-400 rounded-lg p-2'>Maintain User</button>
                     <button className='bg-blue-500 border text-white border-gray-400 rounded-lg p-2'>Maintain Vender</button>
-                    <button className='bg-blue-500 border text-white border-gray-400 rounded-lg p-2'>Logout</button>
+                    <button onClick={logouthandler} className='bg-blue-500 border text-white border-gray-400 rounded-lg p-2'>Logout</button>
 
                 </div>
 

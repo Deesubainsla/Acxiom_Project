@@ -122,6 +122,51 @@ const logout = wrapper(async(req,res)=>{
     .json({message:"User logout successfully", user})
 })
 
-export {login, signin, logout}
+const getmyprofile = wrapper(async(req,res)=>{
+    const {id:userid, role} = req.user;
+    var user;
+    if(role == 'Admin'){
+        user = await Admin.findById(userid);
+    }
+    if(role == 'Vender'){
+        user = await Vender.findById(userid);
+    }
+    if(role == 'User'){
+        user = await User.findById(userid);
+    }
+
+     if(!user){
+        throw new error("User not found",404);
+     }
+
+     user = user.toObject();
+     const smallrole = role.toLowerCase();
+     user = {
+        ...user,
+        role: smallrole
+     }
+
+     res.status(200)
+    .json({message:"You have got your profile", user})
+})
+
+const makeadmin = wrapper(async(req,res)=>{
+    const {name, email, password} = req.body;
+
+    const hashpassword = await bcrypt.hash(password,10);
+    const admin = await Admin.create({
+        name,
+        email,
+        password: hashpassword
+    })
+
+    if(!admin){
+        throw new error("Error in making admin",401);
+    }
+
+    res.status(200).json({message:"successfull",admin})
+})
+
+export {login, signin, logout, getmyprofile,makeadmin}
 
 
