@@ -94,6 +94,34 @@ const signin = wrapper(async(req,res)=>{
     .json({message:'Signin successfull', newuser})
 })
 
-export {login, signin}
+const logout = wrapper(async(req,res)=>{
+
+    const {id:userid , role} = req.user;
+    if(!userid || !role){
+        throw new error("User is not authenticated",401);
+    }
+    var user;
+    
+    if(role == 'Admin'){
+        user = await Admin.findOne({_id:userid});
+    }
+    if(role == 'Vender'){
+        user = await Vender.findOne({_id:userid});
+    }
+    if(role == 'User'){
+        user = await User.findOne({_id:userid});
+    }
+
+    
+    if(!user){
+        throw new error('User is not present for logout',401);
+    }
+
+    res.status(200)
+    .clearCookie('acxiomuser')
+    .json({message:"User logout successfully", user})
+})
+
+export {login, signin, logout}
 
 

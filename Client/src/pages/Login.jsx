@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form';
+import axios from 'axios'
 
 function Login() {
 
@@ -16,11 +17,22 @@ function Login() {
     // },[])
 
 
-    const handlelogin = (data) => {
-        console.log(data);
+    const handlelogin = async(data) => {
+        const info = {
+            email: data.loginemail,
+            password: data.loginpassword,
+            role: data.role
+        }
+        try {
+            const res = await axios.post(`${import.meta.env.VITE_SERVER}/login`,info,
+                {withCredentials: true}
+            )
+        } catch (error) {
+            console.log(error.response.data.message)
+        }
     }
 
-    const handlesignin = (data) => {
+    const handlesignin = async(data) => {
         console.log(data);
     }
 

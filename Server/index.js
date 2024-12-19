@@ -3,8 +3,9 @@ import dotenv from 'dotenv'
 import { errormiddleware } from './middlewares/error.middleware.js';
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
-import { login,signin } from './controllers/common.controllers.js';
+import { login,logout,signin } from './controllers/common.controllers.js';
 import DBconnection from './utils/dbconnection.js';
+import Authenticated from './middlewares/Authentication.middleware.js';
 
 dotenv.config();
 DBconnection(process.env.DATABASE_URI);
@@ -24,6 +25,10 @@ app.get('/',(req,res)=>{
 })
 app.post('/login',login);
 app.post('/signin',signin);
+
+app.use(Authenticated);
+
+app.delete('/logout',logout);
 
 
 

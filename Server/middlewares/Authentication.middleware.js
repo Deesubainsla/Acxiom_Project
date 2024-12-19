@@ -1,6 +1,6 @@
 
 import jwt from 'jsonwebtoken'
-import { error } from './error.middleware'
+import { error } from './error.middleware.js'
 
 const Authenticated = (req,res,next)=>{
 
