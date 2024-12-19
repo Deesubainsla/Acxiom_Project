@@ -8,6 +8,7 @@ import Home from './pages/Home'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { mycontext } from './context/Mycontext'
 import axios from 'axios'
+import toast from 'react-hot-toast'
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
       const res = await axios.get(`${import.meta.env.VITE_URL}/getmyprofile`,{withCredentials:true});
 
       setuser(res.data.user);
+      toast.success(`Welcome Again ${user.email}`);
     } catch (error) {
       console.log(error.response.data.message);
     }

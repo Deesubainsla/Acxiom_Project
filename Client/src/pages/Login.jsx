@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios'
 import { mycontext } from '../context/Mycontext';
 import {useNavigate} from 'react-router-dom'
+import toast from 'react-hot-toast';
 
 function Login() {
 
@@ -43,9 +44,10 @@ function Login() {
             // console.log("myuser",myuser);
             setuser(myuser);
             navigate(`/${role}`);
+            toast.success(`Login successfully ${myuser.email}`);
 
         } catch (error) {
-            console.log(error.response.data.message)
+            toast.error(error.response.data.message)
         }
     }
 
@@ -72,9 +74,10 @@ function Login() {
             // console.log("myuser",myuser);
             setuser(myuser);
             navigate(`/${role}`);
+            toast.success(`Signin successfully ${myuser.email}`);
 
         } catch (error) {
-            console.log(error.response.data.message)
+            toast.error(error.response.data.message)
         }
     }
 

@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios';
 import { mycontext } from '../context/Mycontext';
+import toast from 'react-hot-toast';
 
 function Vender() {
 
@@ -10,8 +11,9 @@ function Vender() {
 
             await axios.delete(`${import.meta.env.VITE_URL}/logout`,{withCredentials: true});
             setuser(null);
+            toast.success("Logout successful")
         } catch (error) {
-            console.log(error.response.data.message);
+            toast.error(error.response.data.message);
         }
 
     }
